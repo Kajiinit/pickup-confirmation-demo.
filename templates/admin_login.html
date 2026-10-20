@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin login</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><main class="card narrow"><div class="brand"><span class="brand-mark">P</span><span>PickupConfirm</span></div><h1>Admin sign in</h1><p class="muted">Private test dashboard</p>{% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<p class="notice error">{{ message }}</p>{% endfor %}{% endwith %}<form method="post"><label for="password">Admin password</label><input id="password" name="password" type="password" required autocomplete="current-password"><button class="primary" type="submit">Sign in</button></form></main></body>
+</html>

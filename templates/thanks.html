@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pickup details received</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><main class="card centered"><div class="success-icon">✓</div><h1>Pickup details received</h1><p class="muted">Thank you. Your test submission has been recorded.</p>{% if location_shared %}<p class="notice">You chose to share device coordinates with this submission.</p>{% endif %}<a class="text-link" href="{{ url_for('home') }}">Back to form</a></main></body>
+</html>

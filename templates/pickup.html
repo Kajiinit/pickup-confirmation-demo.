@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm pickup address</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="brand-mark">P</span><span>PickupConfirm</span><span class="tag">TEST DEMO</span></div>
+    <p class="eyebrow">PICKUP DETAILS</p>
+    <h1>Please confirm your pickup address.</h1>
+    <p class="muted">Enter the address where your pickup should take place.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<p class="notice error">{{ message }}</p>{% endfor %}
+    {% endwith %}
+    <form action="{{ url_for('submit') }}" method="post" id="pickup-form">
+      <label for="pickup_address">Pickup address</label>
+      <input id="pickup_address" name="pickup_address" maxlength="500" placeholder="e.g. Dubai, UAE" required autocomplete="street-address">
+      <button class="secondary" type="button" id="share-location">Share my current device location (optional)</button>
+      <p class="small muted" id="location-status">Your browser will ask permission before sharing device coordinates. You can submit without sharing.</p>
+      <input type="hidden" name="latitude" id="latitude">
+      <input type="hidden" name="longitude" id="longitude">
+      <div class="privacy">
+        <strong>Privacy notice</strong>
+        <p>When you submit, this demo stores the address you enter, the IP address received by the server, submission time, browser information, and referring website when available. Device coordinates are included only if you choose to share them and grant browser permission. This is a test demo, not a real pickup service.</p>
+      </div>
+      <button class="primary" type="submit">Confirm pickup address <span aria-hidden="true">→</span></button>
+    </form>
+  </main>
+  <script>
+    const button = document.getElementById('share-location');
+    const status = document.getElementById('location-status');
+    button.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        status.textContent = 'Location sharing is not supported by this browser.';
+        return;
+      }
+      status.textContent = 'Waiting for your permission…';
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          document.getElementById('latitude').value = position.coords.latitude;
+          document.getElementById('longitude').value = position.coords.longitude;
+          status.textContent = 'Location added. You can remove it by refreshing the page.';
+          button.textContent = 'Device location shared';
+        },
+        () => { status.textContent = 'Location was not shared. You can still submit your address.'; },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    });
+  </script>
+</body>
+</html>

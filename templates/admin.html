@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pickup submissions</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><main class="wide"><header class="admin-header"><div><div class="brand"><span class="brand-mark">P</span><span>PickupConfirm</span></div><h1>Submissions</h1><p class="muted">Latest 500 submissions. Treat IP addresses and coordinates as personal data.</p></div><form method="post" action="{{ url_for('admin_logout') }}"><button class="secondary" type="submit">Sign out</button></form></header>
+{% if rows %}
+<div class="table-wrap"><table><thead><tr><th>Submitted (UTC)</th><th>Address entered</th><th>IP address</th><th>Device location</th><th>Referrer host</th><th>Browser</th></tr></thead><tbody>
+{% for row in rows %}<tr><td>{{ row["submitted_at"] }}</td><td>{{ row["pickup_address"] }}</td><td>{{ row["ip_address"] or "Unavailable" }}</td><td>{% if row["location_shared"] %}{{ row["latitude"] }}, {{ row["longitude"] }}{% else %}Not shared{% endif %}</td><td>{{ row["referrer_host"] or "Unavailable" }}</td><td>{{ row["user_agent"] or "Unavailable" }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty"><h2>No submissions yet</h2><p class="muted">Submit a test address using the public form to see it here.</p><a class="text-link" href="{{ url_for('home') }}">Open pickup form</a></div>{% endif %}
+</main></body></html>
